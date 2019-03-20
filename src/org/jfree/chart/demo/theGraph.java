@@ -1,27 +1,26 @@
 package org.jfree.chart.demo;
 
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.io.File;
-import java.util.Scanner;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.DataLine;
-import java.io.File;
 
-import javax.print.attribute.standard.Media;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.JWindow;
+import javax.swing.SwingConstants;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -50,9 +49,9 @@ public theGraph(final String title,String subtit,double l [] , double q []) {
    
     final XYSeries series = new XYSeries("„‰ÿﬁ… «ﬂ· «·⁄Ì‘");
 
-    for(double k = q3min ; k <= q3max ; k += 2)
     for(double i = q1min ; i <= q1max ; i += 2)
     for(double j = q2min ; j <= q2max ; j += 2)
+    for(double k = q3min ; k <= q3max ; k += 2)
     
     series.add(
     		l[0] * Math.cos(Math.toRadians(i)) + l[1] * Math.cos(Math.toRadians(i+j)) + l[2] * Math.cos(Math.toRadians(i+j+k)),
@@ -99,13 +98,14 @@ public theGraph(final String title,String subtit,double l [] , double q []) {
 
 
 
-private static void play()
+private static Clip play(Clip clip,boolean play)
 {
+	if(play) {
     try{      
     AudioInputStream stream = AudioSystem.getAudioInputStream(new File("mm.wav"));      
     AudioFormat format = stream.getFormat();      
     DataLine.Info info = new DataLine.Info(Clip.class, stream.getFormat());      
-    Clip clip = (Clip) AudioSystem.getLine(info);        
+     clip = (Clip) AudioSystem.getLine(info);        
      clip.open(stream);      
      clip.start();
 
@@ -113,6 +113,9 @@ private static void play()
 {      
      e.printStackTrace();    
 }  
+	}else clip.stop();
+	
+	return clip;
 }
 
 public static void main(final String[] args) {
@@ -191,23 +194,27 @@ public static void main(final String[] args) {
 	    		q[5] = Double.parseDouble(q3maxField.getText()); 
 
 	      
-	      	
-		
-		
-	    //  if(JOptionPane.showConfirmDialog(null, "Processing..... \nDo you want some \"Mahna Mahna\" while waiting ?") == 0) play();
-	  	 
-	    if(Mahna.isSelected()) play();
+	    		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+	    		
+	    		JWindow window = new JWindow();
+	    		window.getContentPane().add(new JLabel("",new ImageIcon("loading.gif"),SwingConstants.CENTER));
+	    		window.setBounds((int) (screenSize.getWidth()/2.25),(int) (screenSize.getHeight()/2.25),350,150);
+	    		window.setVisible(true);
+	    		
+	    Clip clip = null;
+	    if(Mahna.isSelected()) clip = play(clip,true);
+	    
 	      final theGraph demo = new theGraph("«·œÊ·Ì… ··»—„ÃÌ«  «·ﬁÊÌ…","Graph #"+(++num),l,q);
 
 	      demo.pack();
-	      
 	      RefineryUtilities.centerFrameOnScreen(demo);
-
+  	      window.dispose();
+  	      play(clip,false);
 	      demo.setVisible(true);
 	      
 	      
 	      c = JOptionPane.showConfirmDialog(null, "Do you want to plot another graph?",null,JOptionPane.OK_CANCEL_OPTION); 
-
+	      
 		
 		
 	      } else break;
