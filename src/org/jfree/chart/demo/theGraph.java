@@ -39,6 +39,9 @@ public class theGraph extends ApplicationFrame {
 *
 * @param title  the frame title.
 */
+	
+	
+	
 public theGraph(final String title,String subtit,double l [] , double q []) {
   
    super(title);
@@ -96,37 +99,38 @@ public theGraph(final String title,String subtit,double l [] , double q []) {
 */
 
 
-
+//playing and stoping wav clip
 
 private static Clip play(Clip clip,boolean play)
 {
-	if(play) {
+	if(play){
+		
     try{      
     AudioInputStream stream = AudioSystem.getAudioInputStream(new File("mm.wav"));      
     AudioFormat format = stream.getFormat();      
     DataLine.Info info = new DataLine.Info(Clip.class, stream.getFormat());      
-     clip = (Clip) AudioSystem.getLine(info);        
-     clip.open(stream);      
-     clip.start();
+    clip = (Clip) AudioSystem.getLine(info);        
+    clip.open(stream);      
+    clip.start();
 
-} catch (Exception e)
-{      
+    } catch (Exception e){      
      e.printStackTrace();    
-}  
+    }  
+	
 	}else clip.stop();
 	
 	return clip;
 }
 
+
+
 public static void main(final String[] args) {
 	int num = 0;
-	int c = -1;
-
 	do {
 	
 		
 		
-		
+		//GUI SECTION :
 		
 		  JCheckBox Mahna = new JCheckBox("Do you want some \"Mahna Mahna\" during waiting?");
 	      
@@ -174,10 +178,12 @@ public static void main(final String[] args) {
 	      myPanel.add(Mahna);
 	      
 
-	      int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	               "Please Enter the values", JOptionPane.OK_CANCEL_OPTION);
-	      if (result == JOptionPane.OK_OPTION) {
 	      
+	      int result = JOptionPane.showConfirmDialog(null, myPanel,"Please Enter the values", JOptionPane.OK_CANCEL_OPTION);
+	      
+	      //Getting data from the gui
+	      
+	      if (result == JOptionPane.OK_OPTION) {
 	      
 	    		double l[] = new double[3];
 	    		double q[] = new double[6];
@@ -196,69 +202,84 @@ public static void main(final String[] args) {
 	      
 	    		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	    		
+	    		//Displaying Loading window & playing music(if wanted) during waiting time 
+	    		
+	    		//Loading window :
 	    		JWindow window = new JWindow();
 	    		window.getContentPane().add(new JLabel("",new ImageIcon("loading.gif"),SwingConstants.CENTER));
 	    		window.setBounds((int) (screenSize.getWidth()/2.25),(int) (screenSize.getHeight()/2.25),350,150);
 	    		window.setVisible(true);
 	    		
-	    Clip clip = null;
-	    if(Mahna.isSelected()) clip = play(clip,true);
+	    		//Music :
+	    		
+	    		Clip clip = null;
+	   
+	    		if(Mahna.isSelected()) clip = play(clip,true);
 	    
-	      final theGraph demo = new theGraph("«·œÊ·Ì… ··»—„ÃÌ«  «·ﬁÊÌ…","Graph #"+(++num),l,q);
+	    		//Creating the graph
+	    		
+	    		final theGraph demo = new theGraph("«·œÊ·Ì… ··»—„ÃÌ«  «·ﬁÊÌ…","Graph #" + (++num), l, q);
 
-	      demo.pack();
-	      RefineryUtilities.centerFrameOnScreen(demo);
-  	      window.dispose();
-  	      play(clip,false);
-	      demo.setVisible(true);
+	    		demo.pack();
+	    		RefineryUtilities.centerFrameOnScreen(demo);
+	    		
+	    		//closing the Loading window & the music
+	    		window.dispose();
+	    		play(clip,false);
+	    		demo.setVisible(true);
+	     
 	      
-	      
-	      c = JOptionPane.showConfirmDialog(null, "Do you want to plot another graph?",null,JOptionPane.OK_CANCEL_OPTION); 
-	      
-		
-		
 	      } else break;
-		/*
-		
-	String m1 =   JOptionPane.showInputDialog("Enter L1 L2 L3") + " "
-				+ JOptionPane.showInputDialog("Enter q1min q2min q3min") + " " 
-				+ JOptionPane.showInputDialog("Enter q1Max q2Max q3Max");
 	
-	
-	double l[] = new double[3];
-	double q[] = new double[6];
-	
-	Scanner sc = new Scanner(m1);
-	
-	for(int i = 0 ; i < 3 ; i++) {
-		l[i] = sc.nextDouble();
-	}
-	
-	for(int i = 0 ; i < 3 ; i++) {
-		q[i] = sc.nextDouble();
+}while
 
-	}
-	
-	for(int i = 3 ; i < 6 ; i++) {
-		q[i] = sc.nextDouble();
+( JOptionPane.showConfirmDialog(null,"Do you want to plot another graph?" ,null,JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION );
 
-	}
-
-   sc.close();
-
-   if(JOptionPane.showConfirmDialog(null, "Processing..... \nDo you want some \"Mahna Mahna\" while waiting ?") == 0) play();
-   
-   final theGraph demo = new theGraph("«·œÊ·Ì… ··»—„ÃÌ«  «·ﬁÊÌ…","Graph #"+(++num),l,q);
-   
-   demo.pack();
-   
-   RefineryUtilities.centerFrameOnScreen(demo);
-
-   demo.setVisible(true);
-   
-   
-   c = JOptionPane.showConfirmDialog(null, "Do you want to plot another graph?"); */
-	
-}while(c == 0);
 }
 }
+
+
+
+
+
+
+/*
+
+String m1 =   JOptionPane.showInputDialog("Enter L1 L2 L3") + " "
+		+ JOptionPane.showInputDialog("Enter q1min q2min q3min") + " " 
+		+ JOptionPane.showInputDialog("Enter q1Max q2Max q3Max");
+
+
+double l[] = new double[3];
+double q[] = new double[6];
+
+Scanner sc = new Scanner(m1);
+
+for(int i = 0 ; i < 3 ; i++) {
+l[i] = sc.nextDouble();
+}
+
+for(int i = 0 ; i < 3 ; i++) {
+q[i] = sc.nextDouble();
+
+}
+
+for(int i = 3 ; i < 6 ; i++) {
+q[i] = sc.nextDouble();
+
+}
+
+sc.close();
+
+if(JOptionPane.showConfirmDialog(null, "Processing..... \nDo you want some \"Mahna Mahna\" while waiting ?") == 0) play();
+
+final theGraph demo = new theGraph("«·œÊ·Ì… ··»—„ÃÌ«  «·ﬁÊÌ…","Graph #"+(++num),l,q);
+
+demo.pack();
+
+RefineryUtilities.centerFrameOnScreen(demo);
+
+demo.setVisible(true);
+
+
+c = JOptionPane.showConfirmDialog(null, "Do you want to plot another graph?"); */
