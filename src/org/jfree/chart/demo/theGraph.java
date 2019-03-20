@@ -206,7 +206,7 @@ public static void main(final String[] args) {
 	      demo.setVisible(true);
 	      
 	      
-	      c = JOptionPane.showConfirmDialog(null, "Do you want to plot another graph?"); 
+	      c = JOptionPane.showConfirmDialog(null, "Do you want to plot another graph?",null,JOptionPane.OK_CANCEL_OPTION); 
 
 		
 		
