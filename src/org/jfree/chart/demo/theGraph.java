@@ -32,6 +32,9 @@ import org.jfree.ui.ApplicationFrame;
 import org.jfree.ui.RefineryUtilities;
 
 
+import java.awt.*; 
+import javax.swing.*; 
+import java.awt.event.*; 
 public class theGraph extends ApplicationFrame {
 
 /**
@@ -42,7 +45,7 @@ public class theGraph extends ApplicationFrame {
 	
 	
 	
-public theGraph(final String title,String subtit,double l [] , double q []) {
+public theGraph(final String title,String subtit,double l [] , double q [], int Accuracy) {
   
    super(title);
    double q1min = q[0], q2min = q[1], q3min = q[2];
@@ -52,9 +55,9 @@ public theGraph(final String title,String subtit,double l [] , double q []) {
    
     final XYSeries series = new XYSeries("„‰ÿﬁ… «ﬂ· «·⁄Ì‘");
 
-    for(double i = q1min ; i <= q1max ; i += 2)
-    for(double j = q2min ; j <= q2max ; j += 2)
-    for(double k = q3min ; k <= q3max ; k += 2)
+    for(double i = q1min ; i <= q1max ; i += Accuracy)
+    for(double j = q2min ; j <= q2max ; j += Accuracy)
+    for(double k = q3min ; k <= q3max ; k += Accuracy)
     
     series.add(
     		l[0] * Math.cos(Math.toRadians(i)) + l[1] * Math.cos(Math.toRadians(i+j)) + l[2] * Math.cos(Math.toRadians(i+j+k)),
@@ -145,6 +148,17 @@ public static void main(final String[] args) {
 	      JTextField q2maxField = new JTextField(5);
 	      JTextField q3maxField = new JTextField(5);
 	      
+	      JRadioButton HighAcc = new JRadioButton("High Accuracy");
+	      JRadioButton MedAcc = new JRadioButton("Normal Accuracy");
+	      JRadioButton LowAcc = new JRadioButton("Low Accuracy");
+	      HighAcc.setSelected(true);
+	      ButtonGroup group = new ButtonGroup();
+
+		  group.add(HighAcc);
+		  group.add(MedAcc);
+		  group.add(LowAcc);
+
+	      
 	      JPanel myPanel = new JPanel();
 	      myPanel.setLayout(new BoxLayout(myPanel, BoxLayout.Y_AXIS));
 	      myPanel.setSize(1000, 1000);
@@ -175,8 +189,14 @@ public static void main(final String[] args) {
 	      
 	      myPanel.add(Box.createVerticalStrut(15));
 	      
-	      myPanel.add(Mahna);
+
 	      
+	      myPanel.add(HighAcc);
+	      myPanel.add(MedAcc);
+	      myPanel.add(LowAcc);
+	      
+	      myPanel.add(Box.createVerticalStrut(15));	      
+	      myPanel.add(Mahna);
 
 	      
 	      int result = JOptionPane.showConfirmDialog(null, myPanel,"Please Enter the values", JOptionPane.OK_CANCEL_OPTION);
@@ -199,6 +219,11 @@ public static void main(final String[] args) {
 	    		q[4] = Double.parseDouble(q2maxField.getText()); 
 	    		q[5] = Double.parseDouble(q3maxField.getText()); 
 
+	  	      	int k = 2;
+			      
+	  	      	if(HighAcc.isSelected()) k = 2;
+	  	      	else if(MedAcc.isSelected()) k = 3;
+	  	      	else if(LowAcc.isSelected()) k = 5;
 	      
 	    		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 	    		
@@ -210,22 +235,24 @@ public static void main(final String[] args) {
 	    		window.setBounds((int) (screenSize.getWidth()/2.25),(int) (screenSize.getHeight()/2.25),350,150);
 	    		window.setVisible(true);
 	    		
+
+	    		
 	    		//Music :
 	    		
 	    		Clip clip = null;
-	   
-	    		if(Mahna.isSelected()) clip = play(clip,true);
+	    		boolean music = Mahna.isSelected();
+	    		if(music) clip = play(clip,true);
 	    
 	    		//Creating the graph
 	    		
-	    		final theGraph demo = new theGraph("«·œÊ·Ì… ··»—„ÃÌ«  «·ﬁÊÌ…","Graph #" + (++num), l, q);
+	    		final theGraph demo = new theGraph("«·œÊ·Ì… ··»—„ÃÌ«  «·ﬁÊÌ…","Graph #" + (++num), l, q,k);
 
 	    		demo.pack();
 	    		RefineryUtilities.centerFrameOnScreen(demo);
 	    		
 	    		//closing the Loading window & the music
 	    		window.dispose();
-	    		play(clip,false);
+	    		if(music) play(clip,false);
 	    		demo.setVisible(true);
 	     
 	      
