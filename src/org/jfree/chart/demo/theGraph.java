@@ -218,7 +218,28 @@ public static void main(final String[] args) {
 	    		q[3] = Double.parseDouble(q1maxField.getText()); 
 	    		q[4] = Double.parseDouble(q2maxField.getText()); 
 	    		q[5] = Double.parseDouble(q3maxField.getText()); 
-
+	    		
+	    		double temp;
+	    		
+	    		if(q[3]<q[0]) {
+	    			temp = q[3];
+	    			q[3] = q[0];
+	    			q[0] = temp;
+	    		}
+	    		
+	    		if(q[4]<q[1]) {
+	    			temp = q[4];
+	    			q[4] = q[1];
+	    			q[1] = temp;
+	    		}
+	    		
+	    		if(q[5]<q[2]) {
+	    			temp = q[5];
+	    			q[5] = q[2];
+	    			q[2] = temp;
+	    		}
+	    		
+	    		
 	  	      	int k = 2;
 			      
 	  	      	if(HighAcc.isSelected()) k = 2;
@@ -235,7 +256,6 @@ public static void main(final String[] args) {
 	    		window.setBounds((int) (screenSize.getWidth()/2.25),(int) (screenSize.getHeight()/2.25),350,150);
 	    		window.setVisible(true);
 	    		
-
 	    		
 	    		//Music :
 	    		
